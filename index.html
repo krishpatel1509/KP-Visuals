@@ -608,6 +608,29 @@ filter: blur(25px) brightness(0.6);
 transition: filter 0.2s ease;
 }
 
+/* ============================= */
+/* DYNAMIC WATERMARK SYSTEM */
+/* ============================= */
+
+.watermark-container{
+position:relative;
+display:inline-block;
+width:100%;
+}
+
+.watermark-text{
+position:absolute;
+bottom:10px;
+right:12px;
+font-size:12px;
+letter-spacing:2px;
+color:rgba(255,255,255,0.6);
+pointer-events:none;
+user-select:none;
+font-weight:500;
+text-shadow:0 0 6px rgba(0,0,0,0.7);
+}
+
 </style>
 </head>
 
@@ -1124,7 +1147,39 @@ e.preventDefault();
 
 }, {passive:false});
 
-showCategory('nature',document.querySelector(".category-buttons button"));showCategory('nature',document.querySelector(".category-buttons button"));
+showCategory('nature',document.querySelector(".category-buttons button"));
+
+/* ============================= */
+/* DYNAMIC WATERMARK SCRIPT */
+/* ============================= */
+
+function applyWatermark(){
+
+document.querySelectorAll(".featured-grid img, .grid img").forEach(img=>{
+
+if(img.parentElement.classList.contains("watermark-container")) return;
+
+const wrapper=document.createElement("div");
+wrapper.className="watermark-container";
+
+img.parentNode.insertBefore(wrapper,img);
+wrapper.appendChild(img);
+
+const watermark=document.createElement("div");
+watermark.className="watermark-text";
+watermark.innerText="© Krish Patel";
+
+wrapper.appendChild(watermark);
+
+});
+
+}
+
+/* run watermark after images load */
+setTimeout(applyWatermark,800);
+
+/* also run after gallery loads */
+setInterval(applyWatermark,2000);
 
 /* ============================= */
 /* SCREENSHOT BLUR DETECTION */
