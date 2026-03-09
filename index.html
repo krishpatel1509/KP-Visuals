@@ -95,6 +95,7 @@ transition:opacity .6s ease, transform .6s ease;
 user-select:none;
 -webkit-user-select:none;
 -webkit-user-drag:none;
+-webkit-touch-callout:none; /* BLOCK iPhone save menu */
 }
 
 img.loaded{
@@ -546,6 +547,8 @@ border-radius:14px;
 .photo img{
 width:100%;
 display:block;
+pointer-events:none;
+-webkit-touch-callout:none;
 }
 
 .overlay{
@@ -672,7 +675,7 @@ Every photograph tells a story of emotion, light, and perspective.
 <button onclick="showCategory('nature',this)">Nature</button>
 <button onclick="showCategory('art',this)">Art</button>
 <button onclick="showCategory('portraits',this)">Portraits</button>
-<button onclick="showCategory('urban',this)">urban</button>
+<button onclick="showCategory('urban',this)">Urban</button>
 </div>
 
 <div id="galleryContainer" class="grid"></div>
@@ -885,22 +888,19 @@ document.getElementById("contact").scrollIntoView({behavior:"smooth"});
 const categories = {
 
 nature:[
-1,8,13,14,15,28,
-32,33,34,35,36,
-38,39,40,41,42,43,44,45
+1,8,10,13,14,15,32,33,34,36,38,39,40,41,42,43,44,45
 ],
 
 art:[
-5,11,19,20,21,22,23,
-24,25,26,27,29,30,31
+3,5,11,19,20,21,22,23,24,25,26,27,28,29,30,31
 ],
 
 portraits:[
-2,6,16,18
+2,6,7,16,18
 ],
 
 urban:[
-3,4,9,10,12,17,37
+3,4,9,12,14,17,35,37
 ]
 
 };
@@ -1103,11 +1103,21 @@ document.querySelectorAll(".apple-reveal").forEach(section=>{
 appleObserver.observe(section);
 });
 
+/* ============================= */
+/* iPhone Long Press Protection */
+/* ============================= */
+
+document.addEventListener("touchstart", function(e){
+
+if(e.target.tagName === "IMG"){
+e.preventDefault();
+}
+
+}, {passive:false});
+
 showCategory('nature',document.querySelector(".category-buttons button"));
 
 </script>
 
 </body>
 </html>
-
-
