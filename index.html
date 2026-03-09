@@ -231,7 +231,8 @@ content:"";
 position:absolute;
 inset:0;
 background:url("img45.webp") center/cover no-repeat;
-animation:kenburns 20s ease-in-out infinite alternate;
+transform:scale(1.1);
+transition:transform 0.2s ease-out;
 z-index:-2;
 }
 
@@ -447,11 +448,20 @@ pointer-events:auto;
 .lightbox img{
 max-width:95%;
 max-height:92%;
-border-radius:10px;
-opacity:1;
-transform:none;
-transition:opacity .3s ease;
+border-radius:12px;
+opacity:0;
+transform:scale(0.9);
+transition:
+opacity .35s ease,
+transform .45s cubic-bezier(.2,.65,.3,1);
 object-fit:contain;
+}
+
+/* zoom animation when active */
+
+.lightbox.active img{
+opacity:1;
+transform:scale(1);
 }
 
 .lightbox span{
@@ -784,12 +794,16 @@ showImage();
 function showImage(){
 
 lightboxImg.style.opacity="0";
+lightboxImg.style.transform="scale(0.9)";
 
 setTimeout(()=>{
 
 lightboxImg.src = galleryImages[currentIndex].src;
 
+setTimeout(()=>{
 lightboxImg.style.opacity="1";
+lightboxImg.style.transform="scale(1)";
+},50);
 
 },120);
 
@@ -1210,6 +1224,26 @@ window.addEventListener("focus", unblurPage);
 /* mobile app switch detection */
 document.addEventListener("pagehide", blurPage);
 document.addEventListener("pageshow", unblurPage);
+
+/* ============================= */
+/* HERO PARALLAX EFFECT */
+/* ============================= */
+
+const hero = document.querySelector(".hero");
+
+window.addEventListener("scroll", ()=>{
+
+const scrollY = window.scrollY;
+
+if(hero){
+
+const move = scrollY * 0.25;
+
+hero.style.backgroundPosition = `center ${move}px`;
+
+}
+
+});
 
 </script>
 
